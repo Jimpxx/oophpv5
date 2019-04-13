@@ -1,11 +1,14 @@
 {
-    "name" : "anax/noname",
+    "name": "anax/noname",
     "description": "A me page for the oophp course.",
     "license": "MIT",
     "minimum-stability": "beta",
     "prefer-stable": true,
     "autoload": {
-        "psr-4": {"Anax\\": "src/"}
+        "psr-4": {
+            "Anax\\": "src/",
+            "Jiad\\": "src/"
+        }
     },
     "require": {
         "anax/anax-oophp-me": "^2.0.0@beta"
