@@ -1,5 +1,6 @@
-# Gissa mitt nummer
+Gissa mitt nummer
+========================
 
-Välkommen till spelet gissa mitt nummer.
+Välkommen till spelt gissa mitt nummer
 
-[Starta ett nytt spel!](guess/init)
+[Starta ett nytt spel](guess/init)
