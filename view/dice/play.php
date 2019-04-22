@@ -34,7 +34,7 @@ namespace Anax\View;
 <div class="diceBox">
     <p>Dices: <?= implode(", ", $dices) ?></p>
     <p>Sum is: <?= $sum ?>.</p>
-    <p>Total score for this round: <?= $roundScore ?></p>
+    <p>Your score this round: <?= $roundScore ?> - Your total score would be <?= $playerScore + $roundScore ?></p>
 </div>
 <?php endif; ?>
 
