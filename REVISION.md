@@ -1,8 +1,12 @@
 # Revision History
 
+## v4.0.0 (2019-04-29)
+
+-   Done with kmom04.
+
 ## v3.0.0 (2019-04-22)
 
--   Done with kmom02.
+-   Done with kmom03.
 
 ## v2.0.0 (2019-04-14)
 
