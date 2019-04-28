@@ -53,8 +53,8 @@ class Player
     */
     public function resetHistogram()
     {
-        $this->histogram->resetSerie();
-        // $this->histogram = new Histogram();
+        // $this->histogram->resetSerie();
+        $this->histogram = new Histogram();
         $this->hand->resetDice();
     }
 
@@ -116,37 +116,38 @@ class Player
     }
 
 
-    /**
-    * Get the name of the player.
-    *
-    * @return string as the the name of the player.
-    */
-    public function name()
-    {
-        return $this->name;
-    }
+    // /**
+    // * Get the name of the player.
+    // *
+    // * @return string as the the name of the player.
+    // */
+    // public function name()
+    // {
+    //     return $this->name;
+    // }
 
 
     /**
-    * Roll the dices.
+    * Roll the dices and inject data into histogram.
     *
     * @return void
     */
     public function roll()
     {
         $this->hand->roll();
-    }
-
-
-    /**
-    * Inject data.
-    *
-    * @return void
-    */
-    public function injectData()
-    {
         $this->histogram->injectData($this->hand->getDice());
     }
+
+
+    // /**
+    // * Inject data.
+    // *
+    // * @return void
+    // */
+    // public function injectData()
+    // {
+    //     $this->histogram->injectData($this->hand->getDice());
+    // }
 
 
     /**

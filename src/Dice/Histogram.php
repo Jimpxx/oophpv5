@@ -18,26 +18,26 @@ class Histogram
 
 
 
-    /**
-     * Get the serie.
-     *
-     * @return array with the serie.
-     */
-    public function getSerie()
-    {
-        return $this->serie;
-    }
+    // /**
+    //  * Get the serie.
+    //  *
+    //  * @return array with the serie.
+    //  */
+    // public function getSerie()
+    // {
+    //     return $this->serie;
+    // }
 
 
-    /**
-     * Resets the serie.
-     *
-     * @return void.
-     */
-    public function resetSerie()
-    {
-        $this->serie = [];
-    }
+    // /**
+    //  * Resets the serie.
+    //  *
+    //  * @return void.
+    //  */
+    // public function resetSerie()
+    // {
+    //     $this->serie = [];
+    // }
 
 
 
@@ -57,6 +57,9 @@ class Histogram
                 }
             }
             $string .= "\n";
+        }
+        if ($string == ": \n") {
+            $string = "";
         }
         return $string;
     }

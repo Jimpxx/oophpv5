@@ -73,11 +73,11 @@ class DiceController implements AppInjectableInterface
     public function initAction() : object
     {
         // init the session for the gamestart;
-        $p1 = new Player("Player");
-        $p2 = new Player("Computer");
+        $player1 = new Player("Player");
+        $player2 = new Player("Computer");
 
-        $this->app->session->set("player", $p1);
-        $this->app->session->set("computer", $p2);
+        $this->app->session->set("player", $player1);
+        $this->app->session->set("computer", $player2);
         $this->app->session->set("turn", "Player");
         return $this->app->response->redirect("dice100/play");
     }
@@ -94,23 +94,21 @@ class DiceController implements AppInjectableInterface
     {
         $title = "Play the game";
 
-        $p1 = $this->app->session->get("player");
-        $p2 = $this->app->session->get("computer");
+        $player1 = $this->app->session->get("player");
+        $player2 = $this->app->session->get("computer");
         $turn = $this->app->session->get("turn");
         $dices = $this->app->session->get("dices") ?? null;
         $sum = $this->app->session->get("sum") ?? null;
-        // $computerMsg = $this->app->session->get("computerMsg") ?? null;
 
-        // $this->app->session->delete("computerMsg");
         $this->app->session->delete("dices");
         $this->app->session->delete("sum");
 
         $currentPlayer = null;
 
         if ($turn == "Player") {
-            $currentPlayer = $p1;
+            $currentPlayer = $player1;
         } elseif ($turn == "Computer") {
-            $currentPlayer = $p2;
+            $currentPlayer = $player2;
         }
 
         if ($dices == null) {
@@ -119,24 +117,23 @@ class DiceController implements AppInjectableInterface
 
         // var_dump($this->app->session);
 
-        // var_dump($p1);
-        // var_dump($p2);
+        // var_dump($player1);
+        // var_dump($player2);
         $win = false;
 
-        if ($p1->totalScore() >= 100 || $p2->totalScore() >= 100) {
+        if ($player1->totalScore() >= 100 || $player2->totalScore() >= 100) {
             $win = true;
         }
 
         $data = [
-            "playerScore" => $p1->totalScore(),
-            "computerScore" => $p2->totalScore(),
+            "playerScore" => $player1->totalScore(),
+            "computerScore" => $player2->totalScore(),
             "roundScore" => $currentPlayer->roundScore(),
             "dices" => $dices,
             "sum" => $sum,
             "turn" => $turn,
             "win" => $win,
-            "histogram" => $p1->getAsText(),
-            // "computerMsg" => $computerMsg
+            "histogram" => $player1->getAsText(),
         ];
 
         $this->app->page->add("dice/play", $data);
@@ -157,24 +154,20 @@ class DiceController implements AppInjectableInterface
      */
     public function userActionPost() : object
     {
-        $title = "Play the game";
-
-        $p1 = $this->app->session->get("player");
-        $p2 = $this->app->session->get("computer");
+        $player1 = $this->app->session->get("player");
+        $player2 = $this->app->session->get("computer");
         $turn = $this->app->session->get("turn");
         $this->app->session->set("player", null);
 
         $currentPlayer = null;
-        $roundScore = 0;
 
         if ($turn == "Player") {
-            $currentPlayer = $p1;
+            $currentPlayer = $player1;
         } elseif ($turn == "Computer") {
-            $currentPlayer = $p2;
+            $currentPlayer = $player2;
         }
 
         $currentPlayer->roll();
-        $currentPlayer->injectData();
         $dices = $currentPlayer->values();
         $sum = $currentPlayer->sum();
 
@@ -204,30 +197,23 @@ class DiceController implements AppInjectableInterface
      */
     public function computerActionPost() : object
     {
-        $title = "Play the game";
+        $player1 = $this->app->session->get("player");
+        $player2 = $this->app->session->get("computer");
 
-        $p1 = $this->app->session->get("player");
-        $p2 = $this->app->session->get("computer");
-
-        // $computerMsg = "Nothing";
-
-        $currentPlayer = $p2;
-        $roundScore = 0;
+        $currentPlayer = $player2;
 
         $compTurns = rand(1, 2);
 
         // Computer intellect
-        if ($p2->totalScore() == 0) {
-            // $computerMsg = "I'm on the board!";
+        if ($player2->totalScore() == 0) { // Just so the computer will "get on the board"
             $compTurns = 1;
-        } elseif (($p2->totalScore() - $p1->totalScore()) > 30) { // Computer is in the lead with atleast 30 = Chill
-            // $computerMsg = "I'm in the lead, gonna chill now!";
+        } elseif ($player2->totalScore() > 90) { // Probably only one roll will be sufficient
             $compTurns = 1;
-        } elseif (($p1->totalScore() - $p2->totalScore()) > 50) { // Player is leading with atleast 50 = Big gamble
-            // $computerMsg = "Shiiieet, time to gamble!!";
+        } elseif (($player2->totalScore() - $player1->totalScore()) > 30) { // Computer is in the lead with atleast 30 = Chill
+            $compTurns = 1;
+        } elseif (($player1->totalScore() - $player2->totalScore()) > 50) { // Player is leading with atleast 50 = Big gamble
             $compTurns = 3;
-        } elseif (($p1->totalScore() - $p2->totalScore()) > 30) { // Player is leading with atleast 30 = Gamble a little
-            // $computerMsg = "Got to pick this up if I'm gonna win..";
+        } elseif (($player1->totalScore() - $player2->totalScore()) > 30) { // Player is leading with atleast 30 = Gamble a little
             $compTurns = 2;
         }
 
@@ -247,7 +233,6 @@ class DiceController implements AppInjectableInterface
         $currentPlayer->addToTotalScore($currentPlayer->roundScore());
         $currentPlayer->emptyRoundScore();
         $this->app->session->set("turn", "Player");
-        // $this->app->session->set("computerMsg", $computerMsg);
 
         return $this->app->response->redirect("dice100/play");
     }
@@ -262,14 +247,12 @@ class DiceController implements AppInjectableInterface
      */
     public function saveActionPost() : object
     {
-        $title = "Play the game";
-
         $this->app->session->set("turn", "Computer");
 
-        $p1 = $this->app->session->get("player");
+        $player1 = $this->app->session->get("player");
         $this->app->session->set("player", null);
 
-        $currentPlayer = $p1;
+        $currentPlayer = $player1;
 
         $currentPlayer->addToTotalScore($currentPlayer->roundScore());
         $currentPlayer->emptyRoundScore();

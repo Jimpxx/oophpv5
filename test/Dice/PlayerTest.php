@@ -15,20 +15,20 @@ class PlayerTest extends TestCase
      */
     public function testCreateObjectNoArguments()
     {
-        $p = new Player("Jimmy");
-        $this->assertInstanceOf("\Jiad\Dice\Player", $p);
+        $player = new Player("Jimmy");
+        $this->assertInstanceOf("\Jiad\Dice\Player", $player);
     }
 
 
-    /**
-     * Test the retrieval of name
-     */
-    public function testName()
-    {
-        $p = new Player("Jimmy");
+    // /**
+    //  * Test the retrieval of name
+    //  */
+    // public function testName()
+    // {
+    //     $player = new Player("Jimmy");
 
-        $this->assertEquals($p->name(), "Jimmy");
-    }
+    //     $this->assertEquals($player->name(), "Jimmy");
+    // }
 
 
     /**
@@ -36,11 +36,11 @@ class PlayerTest extends TestCase
      */
     public function testTotalScore()
     {
-        $p = new Player("Jimmy");
+        $player = new Player("Jimmy");
 
-        $this->assertEquals($p->totalScore(), 0);
-        $p->addToTotalScore(10);
-        $this->assertEquals($p->totalScore(), 10);
+        $this->assertEquals($player->totalScore(), 0);
+        $player->addToTotalScore(10);
+        $this->assertEquals($player->totalScore(), 10);
     }
 
 
@@ -50,15 +50,36 @@ class PlayerTest extends TestCase
      */
     public function testRoundScore()
     {
-        $p = new Player("Jimmy");
+        $player = new Player("Jimmy");
 
-        $this->assertEquals($p->roundScore(), 0);
-        $this->assertEmpty($p->values());
-        $p->roll();
-        $this->assertNotEmpty($p->values());
-        $p->addToRoundScore($p->sum());
-        $this->assertNotEquals($p->roundScore(), 0);
-        $p->emptyRoundScore();
-        $this->assertEquals($p->roundScore(), 0);
+        $this->assertEquals($player->roundScore(), 0);
+        $this->assertEmpty($player->values());
+        $player->roll();
+        $this->assertNotEmpty($player->values());
+        $player->addToRoundScore($player->sum());
+        $this->assertNotEquals($player->roundScore(), 0);
+        $player->emptyRoundScore();
+        $this->assertEquals($player->roundScore(), 0);
+    }
+
+
+    /**
+     * Test Rolling and adding the sum of the dices to
+     * the roundScore and then empty the roundScore.
+     */
+    public function testHistogram()
+    {
+        $player = new Player("Jimmy");
+
+        $this->assertEquals($player->getAsText(), "");
+        // $this->assertEmpty($player->values());
+        $player->roll();
+        // $this->assertNotEmpty($player->values());
+        // $player->addToRoundScore($player->sum());
+        $this->assertNotEquals($player->getAsText(), "");
+        $player->resetHistogram();
+        $this->assertEquals($player->getAsText(), "");
+        // $player->emptyRoundScore();
+        // $this->assertEquals($player->roundScore(), 0);
     }
 }

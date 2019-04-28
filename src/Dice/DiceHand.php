@@ -8,17 +8,18 @@ namespace Jiad\Dice;
 class DiceHand
 {
     /**
-    * @var Dice $dices   Array consisting of dices.
+    * @var DiceHistogram $dices   Object consisting of dices.
     * @var int  $values  Array consisting of last roll of the dices.
+    * @var int  $numDices  number of dices that is going to be used.
     */
-    private $dices;
+    private $dice;
     private $values;
+    private $numDices;
 
     /**
     * Constructor to initiate the dicehand with a number of dices.
     *
     * @param int $dices Number of dices to create, defaults to two.
-    * @param int $values The values of the dices.
     */
     public function __construct(int $dices = 2)
     {
