@@ -75,12 +75,10 @@ class DiceController implements AppInjectableInterface
         // init the session for the gamestart;
         $p1 = new Player("Player");
         $p2 = new Player("Computer");
-        // $histogram = new Histogram();
 
         $this->app->session->set("player", $p1);
         $this->app->session->set("computer", $p2);
         $this->app->session->set("turn", "Player");
-        $this->app->session->set("histogram", $histogram);
         return $this->app->response->redirect("dice100/play");
     }
 
@@ -101,8 +99,9 @@ class DiceController implements AppInjectableInterface
         $turn = $this->app->session->get("turn");
         $dices = $this->app->session->get("dices") ?? null;
         $sum = $this->app->session->get("sum") ?? null;
-        // $histogram = $this->app->session->get("histogram");
+        // $computerMsg = $this->app->session->get("computerMsg") ?? null;
 
+        // $this->app->session->delete("computerMsg");
         $this->app->session->delete("dices");
         $this->app->session->delete("sum");
 
@@ -136,7 +135,8 @@ class DiceController implements AppInjectableInterface
             "sum" => $sum,
             "turn" => $turn,
             "win" => $win,
-            "histogram" => $p1->getAsText()
+            "histogram" => $p1->getAsText(),
+            // "computerMsg" => $computerMsg
         ];
 
         $this->app->page->add("dice/play", $data);
@@ -162,7 +162,6 @@ class DiceController implements AppInjectableInterface
         $p1 = $this->app->session->get("player");
         $p2 = $this->app->session->get("computer");
         $turn = $this->app->session->get("turn");
-        // $histogram = $this->app->session->get("histogram");
         $this->app->session->set("player", null);
 
         $currentPlayer = null;
@@ -178,13 +177,6 @@ class DiceController implements AppInjectableInterface
         $currentPlayer->injectData();
         $dices = $currentPlayer->values();
         $sum = $currentPlayer->sum();
-
-        // $histogram = new Histogram();
-        // foreach ($currentPlayer->hand as $dice) {
-        // $histogram->injectData($currentPlayer);
-        // }
-
-        // $this->app->session->set("histogram", $histogram);
 
         if (in_array(1, $dices)) {
             $this->app->session->set("turn", "Computer");
@@ -214,12 +206,31 @@ class DiceController implements AppInjectableInterface
     {
         $title = "Play the game";
 
+        $p1 = $this->app->session->get("player");
         $p2 = $this->app->session->get("computer");
+
+        // $computerMsg = "Nothing";
 
         $currentPlayer = $p2;
         $roundScore = 0;
 
-        $compTurns = rand(1, 3);
+        $compTurns = rand(1, 2);
+
+        // Computer intellect
+        if ($p2->totalScore() == 0) {
+            // $computerMsg = "I'm on the board!";
+            $compTurns = 1;
+        } elseif (($p2->totalScore() - $p1->totalScore()) > 30) { // Computer is in the lead with atleast 30 = Chill
+            // $computerMsg = "I'm in the lead, gonna chill now!";
+            $compTurns = 1;
+        } elseif (($p1->totalScore() - $p2->totalScore()) > 50) { // Player is leading with atleast 50 = Big gamble
+            // $computerMsg = "Shiiieet, time to gamble!!";
+            $compTurns = 3;
+        } elseif (($p1->totalScore() - $p2->totalScore()) > 30) { // Player is leading with atleast 30 = Gamble a little
+            // $computerMsg = "Got to pick this up if I'm gonna win..";
+            $compTurns = 2;
+        }
+
 
         for ($i = 0; $i < $compTurns; $i++) {
             $currentPlayer->roll();
@@ -236,6 +247,7 @@ class DiceController implements AppInjectableInterface
         $currentPlayer->addToTotalScore($currentPlayer->roundScore());
         $currentPlayer->emptyRoundScore();
         $this->app->session->set("turn", "Player");
+        // $this->app->session->set("computerMsg", $computerMsg);
 
         return $this->app->response->redirect("dice100/play");
     }
