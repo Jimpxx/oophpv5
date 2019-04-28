@@ -31,6 +31,31 @@ class Player
         $this->roundScore = 0;
         $this->name = $name;
         $this->hand = new DiceHand();
+        $this->histogram = new Histogram();
+    }
+
+
+    /**
+    * Get the histogram.
+    *
+    * @return string as the histogram.
+    */
+    public function getAsText()
+    {
+        return $this->histogram->getAsText();
+    }
+
+
+    /**
+    * Resets the histogram.
+    *
+    * @return void
+    */
+    public function resetHistogram()
+    {
+        $this->histogram->resetSerie();
+        // $this->histogram = new Histogram();
+        $this->hand->resetDice();
     }
 
 
@@ -110,6 +135,17 @@ class Player
     public function roll()
     {
         $this->hand->roll();
+    }
+
+
+    /**
+    * Inject data.
+    *
+    * @return void
+    */
+    public function injectData()
+    {
+        $this->histogram->injectData($this->hand->getDice());
     }
 
 

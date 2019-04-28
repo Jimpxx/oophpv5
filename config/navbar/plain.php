@@ -33,5 +33,15 @@ return [
             "url" => "verktyg",
             "title" => "Verktyg och möjligheter för utveckling.",
         ],
+        [
+            "text" => "Guess game",
+            "url" => "guess-game",
+            "title" => "Spela gissa mitt nummer",
+        ],
+        [
+            "text" => "Dice 100",
+            "url" => "dice",
+            "title" => "Spela Dice 100",
+        ],
     ],
 ];

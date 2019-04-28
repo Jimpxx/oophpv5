@@ -49,3 +49,7 @@ namespace Anax\View;
         <input type="submit" value="Save" name="save" <?= $turn == "Computer" || $win ? "disabled" : null ?>>
     </form>
 </div>
+<div class="histogram">
+    <h2>Histogram</h2>
+    <pre><?= $histogram ?></pre>
+</div>

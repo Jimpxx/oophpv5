@@ -22,15 +22,31 @@ class DiceHand
     */
     public function __construct(int $dices = 2)
     {
-        $this->dices  = [];
+        $this->dice = new DiceHistogram();
         $this->values = [];
+        $this->numDices = $dices;
 
-        for ($i = 0; $i < $dices; $i++) {
-            $this->dices[]  = new Dice();
-            // $this->values[];
-            // $this->values[] = null;
-        }
+        // for ($i = 0; $i < $dices; $i++) {
+        //     $this->dices[]  = new DiceHistogram();
+        //     // $this->dices[]  = new Dice();
+        //     // $this->values[];
+        //     // $this->values[] = null;
+        // }
     }
+    // public function __construct(int $dices = 2)
+    // {
+    //     $this->dices  = [];
+    //     $this->values = [];
+
+    //     for ($i = 0; $i < $dices; $i++) {
+    //         $this->dices[]  = new DiceHistogram();
+    //         // $this->dices[]  = new Dice();
+    //         // $this->values[];
+    //         // $this->values[] = null;
+    //     }
+    // }
+
+
 
     /**
     * Roll all dices save their value.
@@ -41,12 +57,47 @@ class DiceHand
     {
         // $dices = $this->dices;
         $this->values = [];
-        foreach ($this->dices as $dice) {
+        for ($i = 0; $i < $this->numDices; $i++) {
             // echo "Rolling.." . $dice->getRoll();
             // array_push($this->values, $dice->getLastRoll());
-            array_push($this->values, $dice->roll());
+            array_push($this->values, $this->dice->roll());
         }
     }
+    // public function roll()
+    // {
+    //     // $dices = $this->dices;
+    //     $this->values = [];
+    //     foreach ($this->dices as $dice) {
+    //         // echo "Rolling.." . $dice->getRoll();
+    //         // array_push($this->values, $dice->getLastRoll());
+    //         array_push($this->values, $dice->roll());
+    //     }
+    // }
+
+
+
+    /**
+    * Get the dice.
+    *
+    * @return object dice.
+    */
+    public function getDice()
+    {
+        return $this->dice;
+    }
+
+
+    /**
+    * Reset the dice.
+    *
+    * @return object dice.
+    */
+    public function resetDice()
+    {
+        $this->dice = new DiceHistogram();
+    }
+
+
 
     /**
     * Get values of dices from last roll.

@@ -90,7 +90,7 @@ return [
         ],
         [
             "text" => "Dice 100",
-            "url" => "dice100",
+            "url" => "dice",
             "title" => "Spela Dice 100",
         ],
     ],

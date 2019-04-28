@@ -10,7 +10,7 @@ class Dice
     */
     private $lastRoll;
     // private $roll;
-    private $sides;
+    protected $sides;
 
 
 
