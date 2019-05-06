@@ -94,5 +94,10 @@ return [
             "url" => "dice",
             "title" => "Spela Dice 100",
         ],
+        [
+            "text" => "Movie",
+            "url" => "movie",
+            "title" => "Movie Database",
+        ],
     ],
 ];
