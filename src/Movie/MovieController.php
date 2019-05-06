@@ -75,24 +75,194 @@ class MovieController implements AppInjectableInterface
 
 
     /**
-     * This is the index method action, it handles:
-     * ANY METHOD mountpoint
-     * ANY METHOD mountpoint/
-     * ANY METHOD mountpoint/index
+     * This is the GET route for new movie method
+     * GET mountpoint/search
+     *
+     * @return object
+     */
+    public function newActionGet() : object
+    {
+        $title = "New Movie | oophp";
+
+        $this->app->page->add("movie/new");
+
+        return $this->app->page->render([
+            "title" => $title,
+        ]);
+    }
+
+
+    /**
+     * This is the POST route for new movie method
+     * POST mountpoint/search
+     *
+     * @return object
+     */
+    public function newActionPost() : object
+    {
+        $title = $this->app->request->getPost("title");
+        $image = $this->app->request->getPost("image");
+        $year = $this->app->request->getPost("year");
+
+        $this->app->db->connect();
+        $sql = "INSERT INTO movie (title, year, image) VALUES (?, ?, ?);";
+        $this->app->db->execute($sql, [$title, $year, $image]);
+
+        return $this->app->response->redirect("movie/index");
+    }
+
+
+    /**
+     * This is the GET route for edit movie method
+     * GET mountpoint/search
+     *
+     * @param mixed $id
+     *
+     * @return object
+     */
+    public function editActionGet($id) : object
+    {
+        $title = "Edit Movie | oophp";
+
+        $this->app->db->connect();
+        $sql = "SELECT * FROM movie WHERE id = $id;";
+        $res = $this->app->db->executeFetch($sql);
+
+        $this->app->page->add("movie/edit", [
+            "res" => $res,
+        ]);
+
+        return $this->app->page->render([
+            "title" => $title,
+        ]);
+    }
+
+
+    /**
+     * This is the POST route for edit movie method
+     * POST mountpoint/search
+     *
+     * @return object
+     */
+    public function editActionPost() : object
+    {
+        $id = $this->app->request->getPost("id");
+        $title = $this->app->request->getPost("title");
+        $director = $this->app->request->getPost("director");
+        $length = $this->app->request->getPost("length");
+        $year = $this->app->request->getPost("year");
+        $plot = $this->app->request->getPost("plot");
+        $image = $this->app->request->getPost("image");
+        $subtext = $this->app->request->getPost("subtext");
+        $speech = $this->app->request->getPost("speech");
+        $quality = $this->app->request->getPost("quality");
+        $format = $this->app->request->getPost("format");
+
+        $this->app->request->setBody(null);
+
+        $this->app->db->connect();
+        // $sql = "INSERT INTO movie (title, year, image) VALUES (?, ?, ?);";
+        $sql = `
+        UPDATE movie SET
+            title = ?,
+            director = ?,
+            length = ?,
+            year = ?,
+            plot = ?,
+            image = ?,
+            subtext = ?,
+            speech = ?,
+            quality = ?,
+            format = ?
+        WHERE id = ?
+        ;
+        `;
+        $this->app->db->execute($sql, [
+            $title,
+            $director,
+            $length,
+            $year,
+            $plot,
+            $image,
+            $subtext,
+            $speech,
+            $quality,
+            $format,
+            $id
+        ]);
+
+        return $this->app->response->redirect("movie/index");
+    }
+
+
+    /**
+     * This is the GET route for remove movie method
+     * GET mountpoint/search
+     *
+     * @param mixed $id
+     *
+     * @return object
+     */
+    public function removeActionGet($id) : object
+    {
+        $title = "Edit Movie | oophp";
+
+        $this->app->db->connect();
+        $sql = "SELECT * FROM movie WHERE id = $id;";
+        $res = $this->app->db->executeFetch($sql);
+
+        $this->app->page->add("movie/remove", [
+            "res" => $res,
+        ]);
+
+        return $this->app->page->render([
+            "title" => $title,
+        ]);
+    }
+
+
+    /**
+     * This is the POST route for remove movie method
+     * POST mountpoint/search
+     *
+     * @return object
+     */
+    public function removeActionPost() : object
+    {
+        $id = $this->app->request->getPost("id");
+        // $title = $this->app->request->getPost("title");
+        // $director = $this->app->request->getPost("director");
+        // $length = $this->app->request->getPost("length");
+        // $year = $this->app->request->getPost("year");
+        // $plot = $this->app->request->getPost("plot");
+        // $image = $this->app->request->getPost("image");
+        // $subtext = $this->app->request->getPost("subtext");
+        // $speech = $this->app->request->getPost("speech");
+        // $quality = $this->app->request->getPost("quality");
+        // $format = $this->app->request->getPost("format");
+
+        // $this->app->request->setBody(null);
+
+        $this->app->db->connect();
+        // $sql = "INSERT INTO movie (title, year, image) VALUES (?, ?, ?);";
+        $sql = "DELETE FROM movie WHERE id = $id;";
+        $this->app->db->execute($sql, [$id]);
+
+        return $this->app->response->redirect("movie/index");
+    }
+
+
+    /**
+     * This is the GET route for search movie method
+     * GET mountpoint/search
      *
      * @return object
      */
     public function searchActionGet() : object
     {
-        $title = "Search | oophp";
-        // Deal with the action and return a response.
-        // $this->app->db->connect();
-        // $sql = "SELECT * FROM movie;";
-        // $res = $this->app->db->executeFetchAll($sql);
-
+        $title = "Search Movie | oophp";
         $res = $this->app->session->get("res");
         // $this->app->session->delete("res");
-        // $res = $this->app->request->getPost("res");
 
         $this->app->page->add("movie/search", [
             "res" => $res,
@@ -105,18 +275,13 @@ class MovieController implements AppInjectableInterface
 
 
     /**
-     * This is the index method action, it handles:
-     * ANY METHOD mountpoint
-     * ANY METHOD mountpoint/
-     * ANY METHOD mountpoint/index
+     * This is the POST route for search movie method
+     * POST mountpoint/search
      *
      * @return object
      */
     public function searchActionPost() : object
     {
-        // $title = "Search | oophp";
-        // // Deal with the action and return a response.
-
         $searchTitle = $this->app->request->getPost("searchTitle");
         $searchYear = $this->app->request->getPost("searchYear");
         if ($searchTitle) {
@@ -133,21 +298,8 @@ class MovieController implements AppInjectableInterface
         // var_dump($res);
 
         $this->app->session->set("res", $res);
-        // $this->app->request->setPost("res", $res);
-
-        
-        // $sql = "SELECT * FROM movie;";
-        // $res = $this->app->db->executeFetchAll($sql);
-
-        // $this->app->page->add("movie/search", [
-        //     "res" => $res,
-        // ]);
 
         return $this->app->response->redirect("movie/search");
-
-        // return $this->app->page->render([
-        //     "title" => $title,
-        // ]);
     }
 
 
