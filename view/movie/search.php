@@ -34,7 +34,7 @@ namespace Anax\View;
         <p>
             <input type="submit" name="doSearch" value="Search">
         </p>
-        <p><a href="?" class="button">Show all</a></p>
+        <p><a href="index" class="button">Show all</a></p>
     </fieldset>
 </form>
 
