@@ -74,6 +74,109 @@ class MovieController implements AppInjectableInterface
     }
 
 
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function searchActionGet() : object
+    {
+        $title = "Search | oophp";
+        // Deal with the action and return a response.
+        // $this->app->db->connect();
+        // $sql = "SELECT * FROM movie;";
+        // $res = $this->app->db->executeFetchAll($sql);
+
+        $res = $this->app->session->get("res");
+        // $this->app->session->delete("res");
+        // $res = $this->app->request->getPost("res");
+
+        $this->app->page->add("movie/search", [
+            "res" => $res,
+        ]);
+
+        return $this->app->page->render([
+            "title" => $title,
+        ]);
+    }
+
+
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function searchActionPost() : object
+    {
+        // $title = "Search | oophp";
+        // // Deal with the action and return a response.
+
+        $searchTitle = $this->app->request->getPost("searchTitle");
+        $searchYear = $this->app->request->getPost("searchYear");
+        if ($searchTitle) {
+            $this->app->db->connect();
+            $sql = "SELECT * FROM movie WHERE title LIKE ?;";
+            $res = $this->app->db->executeFetchAll($sql, [$searchTitle]);
+        }
+        if ($searchYear) {
+            $this->app->db->connect();
+            $sql = "SELECT * FROM movie WHERE year = ?;";
+            $res = $this->app->db->executeFetchAll($sql, [$searchYear]);
+        }
+
+        // var_dump($res);
+
+        $this->app->session->set("res", $res);
+        // $this->app->request->setPost("res", $res);
+
+        
+        // $sql = "SELECT * FROM movie;";
+        // $res = $this->app->db->executeFetchAll($sql);
+
+        // $this->app->page->add("movie/search", [
+        //     "res" => $res,
+        // ]);
+
+        return $this->app->response->redirect("movie/search");
+
+        // return $this->app->page->render([
+        //     "title" => $title,
+        // ]);
+    }
+
+
+    // /**
+    //  * This is the index method action, it handles:
+    //  * ANY METHOD mountpoint
+    //  * ANY METHOD mountpoint/
+    //  * ANY METHOD mountpoint/index
+    //  *
+    //  * @return object
+    //  */
+    // public function resetActionPost() : object
+    // {
+    //     $title = "Movie database | oophp";
+    //     // Deal with the action and return a response.
+    //     $this->app->db->connect();
+    //     $sql = "SELECT * FROM movie;";
+    //     $res = $this->app->db->executeFetchAll($sql);
+
+    //     $this->app->page->add("movie/index", [
+    //         "resultset" => $res,
+    //     ]);
+
+    //     return $this->app->page->render([
+    //         "title" => $title,
+    //     ]);
+    // }
+
+
 
 
     /**
