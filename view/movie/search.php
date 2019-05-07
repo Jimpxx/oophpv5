@@ -34,9 +34,9 @@ namespace Anax\View;
         <p>
             <input type="submit" name="doSearch" value="Search">
         </p>
-        <p><a href="index" class="button">Show all</a></p>
     </fieldset>
 </form>
+<p><a href="../movie" class="button">Show all</a></p>
 
 <?php
 if ($res) {
@@ -55,7 +55,7 @@ if ($res) {
         <tr>
             <td><?= $id ?></td>
             <td><?= $row->id ?></td>
-            <td><img class="thumb" src="<?= $row->image ?>"></td>
+            <td><img class="thumb" src="../<?= $row->image ?>"></td>
             <td><?= $row->title ?></td>
             <td><?= $row->year ?></td>
         </tr>

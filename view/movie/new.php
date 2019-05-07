@@ -36,6 +36,6 @@ namespace Anax\View;
         <p>
             <input type="submit" name="doSave" value="Save">
         </p>
-        <p><a href="index" class="button">Show all</a></p>
     </fieldset>
 </form>
+<p><a href="../movie" class="button">Show all</a></p>

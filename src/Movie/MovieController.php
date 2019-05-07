@@ -147,36 +147,23 @@ class MovieController implements AppInjectableInterface
     public function editActionPost() : object
     {
         $id = $this->app->request->getPost("id");
-        $title = $this->app->request->getPost("title");
-        $director = $this->app->request->getPost("director");
-        $length = $this->app->request->getPost("length");
-        $year = $this->app->request->getPost("year");
-        $plot = $this->app->request->getPost("plot");
-        $image = $this->app->request->getPost("image");
-        $subtext = $this->app->request->getPost("subtext");
-        $speech = $this->app->request->getPost("speech");
-        $quality = $this->app->request->getPost("quality");
-        $format = $this->app->request->getPost("format");
+        $title = $this->app->request->getPost("title", "");
+        $director = $this->app->request->getPost("director", "");
+        $length = $this->app->request->getPost("length", "");
+        $year = $this->app->request->getPost("year", "");
+        $plot = $this->app->request->getPost("plot", "");
+        $image = $this->app->request->getPost("image", "");
+        $subtext = $this->app->request->getPost("subtext", "");
+        $speech = $this->app->request->getPost("speech", "");
+        $quality = $this->app->request->getPost("quality", "");
+        $format = $this->app->request->getPost("format", "");
 
         $this->app->request->setBody(null);
 
         $this->app->db->connect();
         // $sql = "INSERT INTO movie (title, year, image) VALUES (?, ?, ?);";
-        $sql = `
-        UPDATE movie SET
-            title = ?,
-            director = ?,
-            length = ?,
-            year = ?,
-            plot = ?,
-            image = ?,
-            subtext = ?,
-            speech = ?,
-            quality = ?,
-            format = ?
-        WHERE id = ?
-        ;
-        `;
+        $sql = "UPDATE movie SET title = ?, director = ?, length = ?,year = ?,plot = ?, image = ?, ";
+        $sql .= "subtext = ?, speech = ?, quality = ?, format = ? WHERE id = ?;";
         $this->app->db->execute($sql, [
             $title,
             $director,
@@ -242,10 +229,11 @@ class MovieController implements AppInjectableInterface
         // $format = $this->app->request->getPost("format");
 
         // $this->app->request->setBody(null);
+        // echo $id;
 
         $this->app->db->connect();
         // $sql = "INSERT INTO movie (title, year, image) VALUES (?, ?, ?);";
-        $sql = "DELETE FROM movie WHERE id = $id;";
+        $sql = "DELETE FROM movie WHERE id = ?;";
         $this->app->db->execute($sql, [$id]);
 
         return $this->app->response->redirect("movie/index");

@@ -14,7 +14,7 @@ namespace Anax\View;
 
 ?>
 
-<form action="" method="post">
+<form action="../edit" method="post">
     <fieldset>
         <legend>Edit movie</legend>
         <!-- <input type="hidden" name="route" value="search-title"> -->
@@ -76,6 +76,6 @@ namespace Anax\View;
         <p>
             <input type="submit" name="doSave" value="Save">
         </p>
-        <p><a href="index" class="button">Show all</a></p>
     </fieldset>
 </form>
+<p><a href="../../movie" class="button">Show all</a></p>

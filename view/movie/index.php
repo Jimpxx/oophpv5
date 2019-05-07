@@ -19,9 +19,9 @@ if (!$resultset) {
 
 ?>
 
-<form action="movie/reset" method="post">
+<!-- <form action="movie/reset" method="post">
     <input type="submit" value="Återställ databas" name="reset" class="button">
-</form>
+</form> -->
 <!-- <a href="movie/reset" class="button">Återställ databasen</a> -->
 
 <table>
