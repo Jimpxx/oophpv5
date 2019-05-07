@@ -42,11 +42,11 @@ if (!$resultset) {
         <td><img class="thumb" src="<?= $row->image ?>"></td>
         <td><?= $row->title ?></td>
         <td><?= $row->year ?></td>
-        <td><a href="movie/edit/<?= $row->id ?>">Redigera</a></td>
-        <td><a href="movie/remove/<?= $row->id ?>">Ta bort</a></td>
+        <td><a href="movie/edit/<?= $row->id ?>" class="button btn-green">Redigera</a></td>
+        <td><a href="movie/remove/<?= $row->id ?>" class="button btn-red">Ta bort</a></td>
     </tr>
 <?php endforeach; ?>
 </table>
 
-<a href="movie/new" class="button">Ny film</a>
-<a href="movie/search" class="button">sök film</a>
+<a href="movie/new" class="button btn-green">Ny film</a>
+<a href="movie/search" class="button btn-blue">sök film</a>

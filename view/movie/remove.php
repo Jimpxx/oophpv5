@@ -74,8 +74,8 @@ namespace Anax\View;
             </label>
         </p>
         <p>
-            <input type="submit" name="doRemove" value="Remove">
+            <input type="submit" class="button btn-red" name="doRemove" value="Remove">
         </p>
     </fieldset>
 </form>
-<p><a href="../../movie" class="button">Show all</a></p>
+<p><a href="../../movie" class="button btn-blue">Show all</a></p>

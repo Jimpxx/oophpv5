@@ -250,7 +250,7 @@ class MovieController implements AppInjectableInterface
     {
         $title = "Search Movie | oophp";
         $res = $this->app->session->get("res");
-        // $this->app->session->delete("res");
+        $this->app->session->delete("res");
 
         $this->app->page->add("movie/search", [
             "res" => $res,

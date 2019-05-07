@@ -36,11 +36,11 @@ namespace Anax\View;
         </p>
     </fieldset>
 </form>
-<p><a href="../movie" class="button">Show all</a></p>
+<p><a href="../movie" class="button btn-blue">Show all</a></p>
 
 <?php
 if ($res) {
-?>
+    ?>
 <div class="searchRes">
     <table>
         <tr class="first">
@@ -62,6 +62,6 @@ if ($res) {
     <?php endforeach; ?>
     </table>
 </div>
-<?php
+    <?php
 }
 ?>
