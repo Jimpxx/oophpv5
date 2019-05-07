@@ -1,5 +1,9 @@
 # Revision History
 
+## v5.0.0 (2019-05-07)
+
+-   Done with kmom05.
+
 ## v4.0.0 (2019-04-29)
 
 -   Done with kmom04.
