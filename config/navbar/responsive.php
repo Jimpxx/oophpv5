@@ -99,5 +99,15 @@ return [
             "url" => "movie",
             "title" => "Movie Database",
         ],
+        [
+            "text" => "Filter",
+            "url" => "filter",
+            "title" => "All filters",
+        ],
+        [
+            "text" => "Content",
+            "url" => "content",
+            "title" => "My Content",
+        ],
     ],
 ];
