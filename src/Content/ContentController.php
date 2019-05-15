@@ -74,6 +74,57 @@ class ContentController implements AppInjectableInterface
     }
 
 
+
+//     /**
+//      * This is the index method action, it handles:
+//      * ANY METHOD mountpoint
+//      * ANY METHOD mountpoint/
+//      * ANY METHOD mountpoint/index
+//      *
+//      * @return object
+//      */
+//     public function indexActionGet($route) : object
+//     {
+//         $title = "Content | oophp";
+//         // // Deal with the action and return a response.
+//         $this->app->db->connect();
+//         $sql = <<<EOD
+// SELECT
+//     *,
+//     DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%dT%TZ') AS modified_iso8601,
+//     DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%d') AS modified
+// FROM content
+// WHERE
+//     path = ?
+//     AND type = ?
+//     AND (deleted IS NULL OR deleted > NOW())
+//     AND published <= NOW()
+// ;
+// EOD;
+//         // $sql = "SELECT * FROM movie;";
+//         $res = $this->app->db->executeFetch($sql, [$route, "page"]);
+
+//         if (!$res) {
+//             header("HTTP/1.0 404 Not Found");
+//             $title = "404";
+//             $this->app->page->add("content/404", [
+//                 // "resultset" => $res,
+//             ]);
+//             return $this->app->page->render([
+//                 "title" => $title,
+//             ]);
+//         }
+
+//         $this->app->page->add("content/page", [
+//             "res" => $res,
+//         ]);
+
+//         return $this->app->page->render([
+//             "title" => $title,
+//         ]);
+//     }
+
+
     /**
      * This is the GET route for new movie method
      * GET mountpoint/search
@@ -268,6 +319,193 @@ class ContentController implements AppInjectableInterface
         
 
         return $this->app->response->redirect("content/admin");
+    }
+
+    
+
+    /**
+     * This is the GET route for remove content method
+     * GET mountpoint/content
+     *
+     * @param mixed $id
+     *
+     * @return object
+     */
+    public function pagesActionGet() : object
+    {
+        $title = "Delete Content | oophp";
+
+        $this->app->db->connect();
+        $sql = <<<EOD
+SELECT 
+    *,
+    CASE 
+        WHEN (deleted <= NOW()) THEN "isDeleted"
+        WHEN (published <= NOW()) THEN "isPublished"
+        ELSE "notPublished"
+    END AS status
+FROM content 
+WHERE type = ?
+;
+EOD;
+        $res = $this->app->db->executeFetchAll($sql, ["page"]);
+
+        $this->app->page->add("content/pages", [
+            "res" => $res,
+        ]);
+
+        return $this->app->page->render([
+            "title" => $title,
+        ]);
+    }
+
+
+
+
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function pageActionGet($route) : object
+    {
+        $title = "Content | oophp";
+        // // Deal with the action and return a response.
+        $this->app->db->connect();
+        $sql = <<<EOD
+SELECT
+    *,
+    DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%dT%TZ') AS modified_iso8601,
+    DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%d') AS modified
+FROM content
+WHERE
+    path = ?
+    AND type = ?
+    AND (deleted IS NULL OR deleted > NOW())
+    AND published <= NOW()
+;
+EOD;
+        // $sql = "SELECT * FROM movie;";
+        $res = $this->app->db->executeFetch($sql, [$route, "page"]);
+
+        if (!$res) {
+            header("HTTP/1.0 404 Not Found");
+            $title = "404";
+            $this->app->page->add("content/404", [
+                // "resultset" => $res,
+            ]);
+            return $this->app->page->render([
+                "title" => $title,
+            ]);
+        }
+
+        $filter = new \Jiad\TextFilter\MyTextFilter();
+        $html = $filter->parse($res->data, $res->filter);
+
+        $this->app->page->add("content/page", [
+            "res" => $res,
+            "html" => $html,
+        ]);
+
+        return $this->app->page->render([
+            "title" => $title,
+        ]);
+    }
+
+
+
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function blogActionGet() : object
+    {
+        $title = "Blog | oophp";
+        // // Deal with the action and return a response.
+        $this->app->db->connect();
+        $sql = <<<EOD
+SELECT
+    *,
+    DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%dT%TZ') AS published_iso8601,
+    DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%d') AS published
+FROM content
+WHERE
+    type = ?
+ORDER BY published DESC
+;
+EOD;
+        // $sql = "SELECT * FROM movie;";
+        $res = $this->app->db->executeFetchAll($sql, ["post"]);
+
+        $this->app->page->add("content/blog", [
+            "res" => $res,
+            // "html" => $html,
+        ]);
+
+        return $this->app->page->render([
+            "title" => $title,
+        ]);
+    }
+
+
+
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function blogpostActionGet($slug) : object
+    {
+        $title = "Blogpost | oophp";
+        // // Deal with the action and return a response.
+        $this->app->db->connect();
+        $sql = <<<EOD
+SELECT
+    *,
+    DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%dT%TZ') AS published_iso8601,
+    DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%d') AS published
+FROM content
+WHERE
+    slug = ?
+    AND type = ?
+    AND (deleted IS NULL OR deleted > NOW())
+    AND published <= NOW()
+ORDER BY published DESC
+;
+EOD;
+        // $sql = "SELECT * FROM movie;";
+        $res = $this->app->db->executeFetch($sql, [$slug, "post"]);
+
+
+        if (!$res) {
+            header("HTTP/1.0 404 Not Found");
+            $title = "404";
+            $this->app->page->add("content/404", [
+                // "resultset" => $res,
+            ]);
+            return $this->app->page->render([
+                "title" => $title,
+            ]);
+        }
+
+        $this->app->page->add("content/blogpost", [
+            "res" => $res,
+            // "html" => $html,
+        ]);
+
+        return $this->app->page->render([
+            "title" => $title,
+        ]);
     }
 
 
