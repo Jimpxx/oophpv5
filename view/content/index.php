@@ -13,4 +13,4 @@ namespace Anax\View;
 
 <a href="<?= url("content/admin") ?>">Admin Dashboard</a>
 <a href="<?= url("content/pages") ?>">All Pages</a>
-<a href="<?= url("content/pages") ?>">All Pages</a>
+<a href="<?= url("content/blog") ?>">Blog</a>

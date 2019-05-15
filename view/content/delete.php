@@ -8,6 +8,10 @@ namespace Anax\View;
 
 ?>
 
+<a href="<?= url("content/admin") ?>">Admin Dashboard</a>
+
+<h1>Delete Content</h1>
+
 <form method="post" action="<?= url("content/delete") ?>">
     <fieldset>
     <legend>Delete</legend>

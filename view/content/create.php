@@ -7,6 +7,11 @@ namespace Anax\View;
  */
 
 ?>
+
+<a href="<?= url("content/admin") ?>">Admin Dashboard</a>
+
+<h1>Create Content</h1>
+
 <form method="post">
     <fieldset>
     <legend>Create</legend>

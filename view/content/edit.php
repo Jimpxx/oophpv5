@@ -8,6 +8,10 @@ namespace Anax\View;
 
 ?>
 
+<a href="<?= url("content/admin") ?>">Admin Dashboard</a>
+
+<h1>Edit Content</h1>
+
 <form method="post" action="<?= url("content/edit") ?>">
     <fieldset>
     <legend>Edit</legend>

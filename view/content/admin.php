@@ -8,6 +8,8 @@ namespace Anax\View;
 
 ?>
 
+<a href="<?= url("content/index") ?>">Index</a>
+
 <h1>Admin Dashboard</h1>
 
 <table>
