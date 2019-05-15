@@ -42,3 +42,19 @@ $app->router->get("lek/hello-world-page", function () use ($app) {
         "title" => $title,
     ]);
 });
+
+
+/**
+ * Returning a JSON message with Hello World.
+ */
+$app->router->get("lek/test", function () use ($app) {
+    // echo "Some debugging information";
+
+    $filter = new \Jiad\TextFilter\MyTextFilter();
+    $text = "### Header level 3";
+    // $text = "En [b]fet[/b] moped.";
+    // $html = "<h1>Testar</h1>";
+
+    $html = $filter->parse($text, "markdown");
+    return [$html];
+});
