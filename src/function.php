@@ -4,11 +4,16 @@
  */
 
 /**
- * Some useful function.
+ * Create a slug of a string, to be used as url.
  *
- * @return void
+ * @param string $str the string to format as slug.
+ * 
+ * @return str the formatted slug.
  */
-function useful()
-{
-    ;
+function slugify($str) {
+    $str = mb_strtolower(trim($str));
+    $str = str_replace(array('å','ä','ö'), array('a','a','o'), $str);
+    $str = preg_replace('/[^a-z0-9-]/', '-', $str);
+    $str = trim(preg_replace('/-+/', '-', $str), '-');
+    return $str;
 }
