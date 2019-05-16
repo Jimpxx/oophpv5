@@ -15,8 +15,8 @@ class MyTextFilter
     // use MarkdownExtra;
 
     /**
-     * @var array $filters Supported filters with method names of 
-     *                     their respective handler.
+     * @var array $filters Supported filters with method names of
+     * their respective handler.
      */
     private $filters = [
         "bbcode"    => "bbcode2html",
@@ -43,7 +43,7 @@ class MyTextFilter
             $filter = preg_replace('/\s/', '', explode(',', $filter));
         }
         foreach ($filter as $key) {
-            if(!isset($this->filters[$key])) {
+            if (!isset($this->filters[$key])) {
                 throw new Exception("The filter $key is not a valid filter.");
             }
             $text = call_user_func_array([$this, $this->filters[$key]], [$text]);

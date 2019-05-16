@@ -1,5 +1,7 @@
 <?php
+
 namespace Jiad\TextFilter;
+
 /**
  * Textfilter exceptions
  */

@@ -26,7 +26,7 @@ namespace Anax\View;
         <th>Actions</th>
     </tr>
 <?php foreach ($res as $row) :
-?>
+    ?>
     <tr>
         <td><?= $row->id ?></td>
         <td><?= $row->title ?></td>
