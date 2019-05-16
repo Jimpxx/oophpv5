@@ -50,8 +50,6 @@ class ContentController implements AppInjectableInterface
 
     /**
      * This is the index method action, it handles:
-     * ANY METHOD mountpoint
-     * ANY METHOD mountpoint/
      * ANY METHOD mountpoint/index
      *
      * @return object
@@ -59,10 +57,6 @@ class ContentController implements AppInjectableInterface
     public function indexAction() : object
     {
         $title = "Content | oophp";
-        // // Deal with the action and return a response.
-        // $this->app->db->connect();
-        // $sql = "SELECT * FROM movie;";
-        // $res = $this->app->db->executeFetchAll($sql);
 
         $this->app->page->add("content/index", [
             // "resultset" => $res,
@@ -75,58 +69,8 @@ class ContentController implements AppInjectableInterface
 
 
 
-//     /**
-//      * This is the index method action, it handles:
-//      * ANY METHOD mountpoint
-//      * ANY METHOD mountpoint/
-//      * ANY METHOD mountpoint/index
-//      *
-//      * @return object
-//      */
-//     public function indexActionGet($route) : object
-//     {
-//         $title = "Content | oophp";
-//         // // Deal with the action and return a response.
-//         $this->app->db->connect();
-//         $sql = <<<EOD
-// SELECT
-//     *,
-//     DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%dT%TZ') AS modified_iso8601,
-//     DATE_FORMAT(COALESCE(updated, published), '%Y-%m-%d') AS modified
-// FROM content
-// WHERE
-//     path = ?
-//     AND type = ?
-//     AND (deleted IS NULL OR deleted > NOW())
-//     AND published <= NOW()
-// ;
-// EOD;
-//         // $sql = "SELECT * FROM movie;";
-//         $res = $this->app->db->executeFetch($sql, [$route, "page"]);
-
-//         if (!$res) {
-//             header("HTTP/1.0 404 Not Found");
-//             $title = "404";
-//             $this->app->page->add("content/404", [
-//                 // "resultset" => $res,
-//             ]);
-//             return $this->app->page->render([
-//                 "title" => $title,
-//             ]);
-//         }
-
-//         $this->app->page->add("content/page", [
-//             "res" => $res,
-//         ]);
-
-//         return $this->app->page->render([
-//             "title" => $title,
-//         ]);
-//     }
-
-
     /**
-     * This is the GET route for new movie method
+     * This is the GET route for admin method action
      * GET mountpoint/search
      *
      * @return object
@@ -150,8 +94,8 @@ class ContentController implements AppInjectableInterface
 
 
     /**
-     * This is the GET route for new movie method
-     * GET mountpoint/search
+     * This is the GET route for create method action
+     * GET mountpoint/create
      *
      * @return object
      */
@@ -168,8 +112,8 @@ class ContentController implements AppInjectableInterface
 
 
     /**
-     * This is the POST route for new movie method
-     * POST mountpoint/search
+     * This is the POST route for create method action
+     * POST mountpoint/create
      *
      * @return object
      */
@@ -184,8 +128,6 @@ class ContentController implements AppInjectableInterface
             $this->app->db->execute($sql, [$title]);
             $id = $this->app->db->lastInsertId();
         }
-
-        
 
         return $this->app->response->redirect("content/edit/$id");
     }
@@ -236,12 +178,7 @@ class ContentController implements AppInjectableInterface
         $doSave = $this->app->request->getPost("doSave");
         $doDelete = $this->app->request->getPost("doDelete");
 
-        // $this->app->request->setBody(null);
-
-        // var_dump($_POST);
-
         if ($doSave) {
-            echo "SAVING..";
             if (!$slug) {
                 $slug = slugify($title);
             }
@@ -260,8 +197,6 @@ class ContentController implements AppInjectableInterface
                 $filter,
                 $id
             ]);
-        } else {
-            echo "NOT SAVING..";
         }
 
         if ($doDelete) {
@@ -273,8 +208,8 @@ class ContentController implements AppInjectableInterface
 
 
     /**
-     * This is the GET route for remove content method
-     * GET mountpoint/content
+     * This is the GET route for delete content method
+     * GET mountpoint/delete
      *
      * @param mixed $id
      *
@@ -299,8 +234,8 @@ class ContentController implements AppInjectableInterface
 
 
     /**
-     * This is the POST route for remove movie method
-     * POST mountpoint/search
+     * This is the POST route for delete content method
+     * POST mountpoint/delete
      *
      * @return object
      */
@@ -309,14 +244,11 @@ class ContentController implements AppInjectableInterface
         $id = $this->app->request->getPost("contentId");
         $doDelete = $this->app->request->getPost("doDelete");
 
-        echo $doDelete;
-
         if ($doDelete) {
             $this->app->db->connect();
             $sql = "UPDATE content SET deleted=NOW() WHERE id=?;";
             $this->app->db->execute($sql, [$id]);
         }
-        
 
         return $this->app->response->redirect("content/admin");
     }
@@ -324,10 +256,9 @@ class ContentController implements AppInjectableInterface
     
 
     /**
-     * This is the GET route for remove content method
-     * GET mountpoint/content
+     * This is the GET route for pages method
+     * GET mountpoint/pages
      *
-     * @param mixed $id
      *
      * @return object
      */
@@ -363,10 +294,10 @@ EOD;
 
 
     /**
-     * This is the index method action, it handles:
-     * ANY METHOD mountpoint
-     * ANY METHOD mountpoint/
-     * ANY METHOD mountpoint/index
+     * This is the page action method
+     * GET mountpoint/page
+     *
+     * @param mixed $route
      *
      * @return object
      */
@@ -418,10 +349,8 @@ EOD;
 
 
     /**
-     * This is the index method action, it handles:
-     * ANY METHOD mountpoint
-     * ANY METHOD mountpoint/
-     * ANY METHOD mountpoint/index
+     * This is the blog method action
+     * GET mountpoint/blog
      *
      * @return object
      */
@@ -457,10 +386,10 @@ EOD;
 
 
     /**
-     * This is the index method action, it handles:
-     * ANY METHOD mountpoint
-     * ANY METHOD mountpoint/
-     * ANY METHOD mountpoint/index
+     * This is the blogpost action method
+     * GET mountpoint/blogpost
+     *
+     * @param mixed $slug
      *
      * @return object
      */
@@ -508,66 +437,4 @@ EOD;
         ]);
     }
 
-
-    // /**
-    //  * This is the GET route for search movie method
-    //  * GET mountpoint/search
-    //  *
-    //  * @return object
-    //  */
-    // public function searchActionGet() : object
-    // {
-    //     $title = "Search Movie | oophp";
-    //     $res = $this->app->session->get("res");
-    //     $this->app->session->delete("res");
-
-    //     $this->app->page->add("movie/search", [
-    //         "res" => $res,
-    //     ]);
-
-    //     return $this->app->page->render([
-    //         "title" => $title,
-    //     ]);
-    // }
-
-
-    // /**
-    //  * This is the POST route for search movie method
-    //  * POST mountpoint/search
-    //  *
-    //  * @return object
-    //  */
-    // public function searchActionPost() : object
-    // {
-    //     $searchTitle = $this->app->request->getPost("searchTitle");
-    //     $searchYear = $this->app->request->getPost("searchYear");
-    //     if ($searchTitle) {
-    //         $this->app->db->connect();
-    //         $sql = "SELECT * FROM movie WHERE title LIKE ?;";
-    //         $res = $this->app->db->executeFetchAll($sql, [$searchTitle]);
-    //     }
-    //     if ($searchYear) {
-    //         $this->app->db->connect();
-    //         $sql = "SELECT * FROM movie WHERE year = ?;";
-    //         $res = $this->app->db->executeFetchAll($sql, [$searchYear]);
-    //     }
-
-    //     $this->app->session->set("res", $res);
-
-    //     return $this->app->response->redirect("movie/search");
-    // }
-
-
-
-    // /**
-    //  * This sample method dumps the content of $app.
-    //  * GET mountpoint/dump-app
-    //  *
-    //  * @return string
-    //  */
-    // public function debugAction() : string
-    // {
-    //     // Deal with the action and return a response.
-    //     return "Debug my game!";
-    // }
 }
